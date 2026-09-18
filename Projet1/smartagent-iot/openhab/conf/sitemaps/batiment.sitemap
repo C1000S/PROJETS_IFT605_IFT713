@@ -1,0 +1,32 @@
+// batiment.sitemap — tableau de bord Basic UI
+//
+// Un sitemap décrit COMMENT afficher des Items déjà existants (il ne crée
+// aucune nouvelle donnée) : un Frame regroupe visuellement des éléments,
+// Text affiche une valeur en lecture seule, Switch un bouton ON/OFF, et
+// Setpoint un contrôle +/- pour envoyer une commande numérique (ici, la
+// consigne du thermostat).
+//
+// Accessible sur http://localhost:8080/basicui/app?sitemap=batiment
+// (Main UI, http://localhost:8080/, reste une interface différente et
+// délibérément vide tant qu'aucune page n'y est construite manuellement.)
+sitemap batiment label="SmartAgent-IoT — Bâtiment" icon="house"
+{
+    Frame label="Salle A" {
+        Text item=SalleA_Temperature icon="temperature"
+        Text item=SalleA_Luminosite icon="light"
+        Switch item=SalleA_Occupation icon="presence"
+        Setpoint item=SalleA_Thermostat icon="heating" minValue=15 maxValue=30 step=0.5
+    }
+    Frame label="Salle B" {
+        Text item=SalleB_Temperature icon="temperature"
+        Text item=SalleB_Luminosite icon="light"
+        Switch item=SalleB_Occupation icon="presence"
+        Setpoint item=SalleB_Thermostat icon="heating" minValue=15 maxValue=30 step=0.5
+    }
+    Frame label="Cuisine" {
+        Text item=Cuisine_Temperature icon="temperature"
+        Text item=Cuisine_Luminosite icon="light"
+        Switch item=Cuisine_Occupation icon="presence"
+        Setpoint item=Cuisine_Thermostat icon="heating" minValue=15 maxValue=30 step=0.5
+    }
+}

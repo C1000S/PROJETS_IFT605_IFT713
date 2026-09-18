@@ -1,0 +1,24 @@
+# Build Maven
+target/
+*.class
+
+# openHAB génère énormément de fichiers runtime dans userdata/ (cache, logs, kar,
+# base de données de config UI) : on ne versionne QUE nos fichiers texte de conf
+# (things/items/rules), pas l'état runtime.
+openhab/userdata/
+openhab/addons/*
+!openhab/addons/.gitkeep
+
+# Logs
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store

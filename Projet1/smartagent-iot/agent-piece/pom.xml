@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Module Maven : agent-piece
+    Contient (Tâche 2.1 / 2.2) :
+      - IAgentPiece : l'interface distante RMI (le "contrat" partagé)
+      - AgentPiece  : l'implémentation = serveur RMI + abonné MQTT pour SA pièce
+    Ce module dépend de Paho (pour s'abonner en MQTT) et de org.json (pour
+    construire getEtatJson()). RMI lui-même ne demande AUCUNE dépendance externe :
+    java.rmi.* fait partie du JDK standard depuis toujours.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ca.udes.ift605</groupId>
+        <artifactId>smartagent-iot-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>agent-piece</artifactId>
+    <name>SmartAgent-IoT :: Agent Piece (RMI + MQTT)</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>agent-piece</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ca.udes.ift605.smartagent.agent.AgentPieceMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

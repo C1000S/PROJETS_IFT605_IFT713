@@ -1,0 +1,39 @@
+// batiment.things — Tâche 1.2
+//
+// Concept : un Thing mqtt:broker est un "Bridge" (pont) = la connexion réseau
+// vers Mosquitto. Les 3 Thing mqtt:topic (un par pièce) sont "enfants" de ce
+// pont et déclarent chacun 4 canaux (Channels), un par capteur/actuateur.
+// Chaque canal fait juste le lien entre un topic MQTT et une valeur exploitable
+// par openHAB (stateTopic = lecture, commandTopic = écriture).
+
+Thing mqtt:broker:mosquitto "Broker Mosquitto" [
+    host="localhost",
+    port=1883,
+    secure=false
+]
+
+Thing mqtt:topic:salleA "Salle A" (mqtt:broker:mosquitto) {
+    Channels:
+        Type number : temperature "Température"        [ stateTopic="batiment/salleA/capteur/temperature" ]
+        Type number : luminosite  "Luminosité"          [ stateTopic="batiment/salleA/capteur/luminosite" ]
+        Type switch : occupation  "Occupation"          [ stateTopic="batiment/salleA/capteur/occupation", on="true", off="false" ]
+        // Canal bidirectionnel : commandTopic pour envoyer la consigne (RMI -> MQTT),
+        // stateTopic identique pour que l'UI affiche aussi la dernière consigne connue.
+        Type number : thermostat  "Consigne thermostat" [ commandTopic="batiment/salleA/actuateur/thermostat", stateTopic="batiment/salleA/actuateur/thermostat" ]
+}
+
+Thing mqtt:topic:salleB "Salle B" (mqtt:broker:mosquitto) {
+    Channels:
+        Type number : temperature "Température"        [ stateTopic="batiment/salleB/capteur/temperature" ]
+        Type number : luminosite  "Luminosité"          [ stateTopic="batiment/salleB/capteur/luminosite" ]
+        Type switch : occupation  "Occupation"          [ stateTopic="batiment/salleB/capteur/occupation", on="true", off="false" ]
+        Type number : thermostat  "Consigne thermostat" [ commandTopic="batiment/salleB/actuateur/thermostat", stateTopic="batiment/salleB/actuateur/thermostat" ]
+}
+
+Thing mqtt:topic:cuisine "Cuisine" (mqtt:broker:mosquitto) {
+    Channels:
+        Type number : temperature "Température"        [ stateTopic="batiment/cuisine/capteur/temperature" ]
+        Type number : luminosite  "Luminosité"          [ stateTopic="batiment/cuisine/capteur/luminosite" ]
+        Type switch : occupation  "Occupation"          [ stateTopic="batiment/cuisine/capteur/occupation", on="true", off="false" ]
+        Type number : thermostat  "Consigne thermostat" [ commandTopic="batiment/cuisine/actuateur/thermostat", stateTopic="batiment/cuisine/actuateur/thermostat" ]
+}

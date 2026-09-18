@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Module Maven : coordinateur
+    Contient (Tâche 2.3) : CoordinateurBatiment, qui se connecte en RMI aux
+    3 AgentPiece via le registre (port 2199) et applique la politique
+    d'équilibrage thermique.
+
+    Dépend du module agent-piece UNIQUEMENT pour récupérer IAgentPiece.class
+    (le contrat). Depuis Java 5, RMI génère les stubs dynamiquement : un client
+    RMI n'a jamais besoin de la classe d'IMPLÉMENTATION distante (AgentPiece),
+    seulement de l'INTERFACE (IAgentPiece) — c'est tout l'intérêt du découplage.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ca.udes.ift605</groupId>
+        <artifactId>smartagent-iot-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>coordinateur</artifactId>
+    <name>SmartAgent-IoT :: Coordinateur Batiment</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>ca.udes.ift605</groupId>
+            <artifactId>agent-piece</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>coordinateur</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ca.udes.ift605.smartagent.coordinateur.CoordinateurMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    POM parent du projet SmartAgent-IoT (IFT605/IFT713 - Automne 2026).
+
+    Rôle d'un POM "parent" en Maven multi-module :
+    - packaging "pom" (pas de code ici, juste de la configuration partagée)
+    - <modules> liste les sous-projets qui seront construits ensemble
+    - <dependencyManagement> fixe les VERSIONS des dépendances communes une seule
+      fois ici ; chaque module les redéclare SANS version dans son propre pom.xml
+    - <properties> centralise la version de Java et les versions de librairies
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ca.udes.ift605</groupId>
+    <artifactId>smartagent-iot-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>SmartAgent-IoT (parent)</name>
+
+    <modules>
+        <module>sensor-simulator</module>
+        <module>agent-piece</module>
+        <module>coordinateur</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <!-- Client MQTT Eclipse Paho (API MqttClient utilisée dans l'énoncé) -->
+        <paho.version>1.2.5</paho.version>
+        <!-- Petite librairie JSON pour construire getEtatJson() sans écrire du JSON à la main -->
+        <json.version>20240303</json.version>
+        <junit.version>5.10.2</junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+                <version>${paho.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.5</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

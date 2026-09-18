@@ -1,0 +1,37 @@
+// batiment.items — Tâche 1.2 (+ Tâche 3.1 : profil "expire")
+//
+// Concept : un Item est la variable manipulable par l'UI et les règles.
+// Chaque Item est "lié" (binding) à exactement un canal du Thing correspondant
+// via { channel="..." }. Sans Item, un Thing/canal existe mais rien n'est
+// visible ni utilisable dans le tableau de bord ou les règles DSL.
+//
+// Tâche 3.1 — profil "expire" sur les 3 Items de CAPTEUR (pas le thermostat,
+// qui est une consigne que NOUS envoyons, pas une mesure) : si aucune mise à
+// jour n'arrive pendant 30s, openHAB force l'état à UNDEF automatiquement.
+// C'est la façon idiomatique openHAB de répondre à l'exigence "openHAB
+// affiche un état UNDEF sur l'Item correspondant" — aucun code Java requis
+// côté agent pour ce comportement précis, seulement pour sa DÉTECTION
+// (AgentPiece.estEnTimeout(), utilisée par le coordinateur).
+
+// --- Salle A ---
+Number  SalleA_Temperature  "Salle A Température [%.1f °C]"   <temperature> (gTemperature) { channel="mqtt:topic:salleA:temperature", profile="expire", expire="30s,state=UNDEF" }
+Number  SalleA_Luminosite   "Salle A Luminosité [%d lux]"     <light>                       { channel="mqtt:topic:salleA:luminosite",  profile="expire", expire="30s,state=UNDEF" }
+Switch  SalleA_Occupation   "Salle A Occupée"                 <presence>    (gOccupation)   { channel="mqtt:topic:salleA:occupation",  profile="expire", expire="30s,state=UNDEF" }
+Number  SalleA_Thermostat   "Salle A Consigne [%.1f °C]"      <heating>                     { channel="mqtt:topic:salleA:thermostat" }
+
+// --- Salle B ---
+Number  SalleB_Temperature  "Salle B Température [%.1f °C]"   <temperature> (gTemperature) { channel="mqtt:topic:salleB:temperature", profile="expire", expire="30s,state=UNDEF" }
+Number  SalleB_Luminosite   "Salle B Luminosité [%d lux]"     <light>                       { channel="mqtt:topic:salleB:luminosite",  profile="expire", expire="30s,state=UNDEF" }
+Switch  SalleB_Occupation   "Salle B Occupée"                 <presence>    (gOccupation)   { channel="mqtt:topic:salleB:occupation",  profile="expire", expire="30s,state=UNDEF" }
+Number  SalleB_Thermostat   "Salle B Consigne [%.1f °C]"      <heating>                     { channel="mqtt:topic:salleB:thermostat" }
+
+// --- Cuisine ---
+Number  Cuisine_Temperature "Cuisine Température [%.1f °C]"   <temperature> (gTemperature) { channel="mqtt:topic:cuisine:temperature", profile="expire", expire="30s,state=UNDEF" }
+Number  Cuisine_Luminosite  "Cuisine Luminosité [%d lux]"     <light>                       { channel="mqtt:topic:cuisine:luminosite",  profile="expire", expire="30s,state=UNDEF" }
+Switch  Cuisine_Occupation  "Cuisine Occupée"                 <presence>    (gOccupation)   { channel="mqtt:topic:cuisine:occupation",  profile="expire", expire="30s,state=UNDEF" }
+Number  Cuisine_Thermostat  "Cuisine Consigne [%.1f °C]"      <heating>                     { channel="mqtt:topic:cuisine:thermostat" }
+
+// Groupes pratiques pour l'UI (tableau de bord) et pour cibler plusieurs
+// items d'un coup si besoin dans une règle.
+Group gTemperature "Températures du bâtiment"
+Group gOccupation  "Occupation des pièces"

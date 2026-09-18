@@ -1,0 +1,75 @@
+// batiment.rules — Tâche 1.2
+//
+// Deux familles de règles DSL, comme exigé par l'énoncé : économie d'énergie
+// et alerte. Écrites de façon explicite (une règle par pièce pour l'économie,
+// calquée sur l'exemple fourni dans l'énoncé) plutôt qu'avec une Map générique
+// + "triggeringItem" : dans ce moteur de règles (Xtend restreint), l'inférence
+// de type sur Map<String,String> échoue silencieusement ("refers to the
+// missing type Object"), et triggeringItem s'est avéré parfois null avec des
+// triggers combinés par "or". Le style explicite ci-dessous est 100% fiable
+// et reste lisible pour seulement 3 pièces.
+
+// Consigne appliquée quand une pièce se vide (°C). Choix documenté dans le
+// rapport : 18°C = économie d'énergie sans risque de gel.
+val Number CONSIGNE_ECONOMIE = 18
+
+// Seuils d'alerte (plage de confort des simulateurs : 17-26°C ; on alerte
+// avec une marge de sécurité en dehors de cette plage).
+val Number SEUIL_TEMP_HAUTE = 27.0
+val Number SEUIL_TEMP_BASSE = 15.0
+
+// --- Règle d'économie d'énergie (1 par pièce) ---
+
+rule "Economie energie - Salle A vide"
+when
+    Item SalleA_Occupation changed to OFF
+then
+    SalleA_Thermostat.sendCommand(CONSIGNE_ECONOMIE)
+    logInfo("SmartAgentIoT", "Economie d'energie: SalleA vide -> consigne " + CONSIGNE_ECONOMIE + " degC")
+end
+
+rule "Economie energie - Salle B vide"
+when
+    Item SalleB_Occupation changed to OFF
+then
+    SalleB_Thermostat.sendCommand(CONSIGNE_ECONOMIE)
+    logInfo("SmartAgentIoT", "Economie d'energie: SalleB vide -> consigne " + CONSIGNE_ECONOMIE + " degC")
+end
+
+rule "Economie energie - Cuisine vide"
+when
+    Item Cuisine_Occupation changed to OFF
+then
+    Cuisine_Thermostat.sendCommand(CONSIGNE_ECONOMIE)
+    logInfo("SmartAgentIoT", "Economie d'energie: Cuisine vide -> consigne " + CONSIGNE_ECONOMIE + " degC")
+end
+
+// --- Règle d'alerte : vérifie les 3 pièces dès qu'une température change ---
+// (instanceof Number protège contre l'état UNDEF/NULL avant la toute première
+// mesure MQTT reçue par openHAB).
+
+rule "Alerte temperature hors plage"
+when
+    Item SalleA_Temperature changed or
+    Item SalleB_Temperature changed or
+    Item Cuisine_Temperature changed
+then
+    if (SalleA_Temperature.state instanceof Number) {
+        val t = (SalleA_Temperature.state as Number).floatValue
+        if (t > SEUIL_TEMP_HAUTE || t < SEUIL_TEMP_BASSE) {
+            logWarn("SmartAgentIoT", "ALERTE: SalleA hors plage (" + t + " degC)")
+        }
+    }
+    if (SalleB_Temperature.state instanceof Number) {
+        val t = (SalleB_Temperature.state as Number).floatValue
+        if (t > SEUIL_TEMP_HAUTE || t < SEUIL_TEMP_BASSE) {
+            logWarn("SmartAgentIoT", "ALERTE: SalleB hors plage (" + t + " degC)")
+        }
+    }
+    if (Cuisine_Temperature.state instanceof Number) {
+        val t = (Cuisine_Temperature.state as Number).floatValue
+        if (t > SEUIL_TEMP_HAUTE || t < SEUIL_TEMP_BASSE) {
+            logWarn("SmartAgentIoT", "ALERTE: Cuisine hors plage (" + t + " degC)")
+        }
+    }
+end

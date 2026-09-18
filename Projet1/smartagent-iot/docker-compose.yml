@@ -1,0 +1,46 @@
+# SmartAgent-IoT — infrastructure (Semaine 1)
+#
+# Deux services : le broker MQTT (Mosquitto) et le tableau de bord (openHAB).
+# On utilise network_mode: host pour que :
+#   - openHAB puisse joindre le broker via "localhost:1883" (exactement comme
+#     dans batiment.things fourni par l'énoncé : host="localhost")
+#   - les agents Java lancés directement sur la machine (hors Docker) puissent
+#     eux aussi publier/s'abonner sur "localhost:1883" et interroger l'API REST
+#     openHAB sur "localhost:8080" sans configuration réseau supplémentaire.
+# (network_mode: host ne fonctionne que sous Linux — cohérent avec cette machine.)
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: smartagent-mosquitto
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+
+  openhab:
+    # Épinglé sur le dernier correctif de la branche 4.x (l'énoncé demande
+    # openHAB 4 ; Docker Hub ne propose plus de tag flottant "4-debian" depuis
+    # la sortie d'openHAB 5, donc on fixe explicitement la version).
+    image: openhab/openhab:4.3.11-debian
+    container_name: smartagent-openhab
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - mosquitto
+    environment:
+      - OPENHAB_HTTP_PORT=8080
+      - OPENHAB_HTTPS_PORT=8443
+      - TZ=America/Toronto
+      - CRYPTO_POLICY=unlimited
+      - USER_ID=1000
+      - GROUP_ID=1000
+    volumes:
+      - ./openhab/conf:/openhab/conf
+      - ./openhab/userdata:/openhab/userdata
+      - ./openhab/addons:/openhab/addons
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:

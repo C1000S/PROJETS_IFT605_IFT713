@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 780" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565C0"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#C62828"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E65100"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1100" height="780" fill="#FFFFFF"/>
+
+  <text x="550" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A1A">SmartAgent-IoT — Architecture générale</text>
+
+  <!-- ===== Sensor boxes ===== -->
+  <g>
+    <rect x="40" y="60" width="220" height="70" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+    <text x="150" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="#1B5E20">Simulateur SalleA</text>
+    <text x="150" y="108" text-anchor="middle" font-size="12" fill="#2E7D32">CapteurSimulateur</text>
+  </g>
+  <g>
+    <rect x="310" y="60" width="220" height="70" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+    <text x="420" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="#1B5E20">Simulateur SalleB</text>
+    <text x="420" y="108" text-anchor="middle" font-size="12" fill="#2E7D32">CapteurSimulateur</text>
+  </g>
+  <g>
+    <rect x="580" y="60" width="220" height="70" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+    <text x="690" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="#1B5E20">Simulateur Cuisine</text>
+    <text x="690" y="108" text-anchor="middle" font-size="12" fill="#2E7D32">CapteurSimulateur</text>
+  </g>
+
+  <!-- arrows sensors -> broker -->
+  <line x1="150" y1="130" x2="150" y2="278" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="420" y1="130" x2="420" y2="278" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="690" y1="130" x2="690" y2="278" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="440" y="200" text-anchor="middle" font-size="12" fill="#1565C0" font-style="italic">publish (MQTT, retenu, toutes les 5s)</text>
+
+  <!-- ===== Broker bus ===== -->
+  <rect x="40" y="280" width="760" height="60" rx="8" fill="#E3F2FD" stroke="#1565C0" stroke-width="2.5"/>
+  <text x="420" y="305" text-anchor="middle" font-size="15" font-weight="700" fill="#0D47A1">Mosquitto — Broker MQTT</text>
+  <text x="420" y="324" text-anchor="middle" font-size="12" fill="#1565C0">port 1883 — topics batiment/{piece}/capteur/{type}</text>
+
+  <!-- broker -> openHAB -->
+  <line x1="800" y1="310" x2="948" y2="310" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="875" y="298" text-anchor="middle" font-size="11" fill="#1565C0" font-style="italic">s'abonne aussi</text>
+
+  <!-- ===== openHAB ===== -->
+  <rect x="950" y="280" width="110" height="60" rx="8" fill="#FFF3E0" stroke="#E65100" stroke-width="2"/>
+  <text x="1005" y="305" text-anchor="middle" font-size="13" font-weight="700" fill="#BF360C">openHAB</text>
+  <text x="1005" y="322" text-anchor="middle" font-size="10" fill="#E65100">Things/Items/Rules</text>
+
+  <line x1="1005" y1="340" x2="1005" y2="428" stroke="#E65100" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <rect x="950" y="430" width="110" height="60" rx="8" fill="#FFF3E0" stroke="#E65100" stroke-width="2"/>
+  <text x="1005" y="455" text-anchor="middle" font-size="12" font-weight="700" fill="#BF360C">Basic UI</text>
+  <text x="1005" y="472" text-anchor="middle" font-size="9" fill="#E65100">:8080/basicui</text>
+
+  <!-- arrows broker -> agents -->
+  <line x1="150" y1="340" x2="150" y2="428" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="420" y1="340" x2="420" y2="428" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="690" y1="340" x2="690" y2="428" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="230" y="390" text-anchor="middle" font-size="12" fill="#1565C0" font-style="italic">subscribe (MQTT)</text>
+
+  <!-- ===== Agent boxes ===== -->
+  <g>
+    <rect x="40" y="430" width="220" height="70" rx="8" fill="#EDE7F6" stroke="#5E35B1" stroke-width="2"/>
+    <text x="150" y="458" text-anchor="middle" font-size="14" font-weight="600" fill="#311B92">AgentPiece salleA</text>
+    <text x="150" y="478" text-anchor="middle" font-size="11" fill="#5E35B1">serveur RMI + abonné MQTT</text>
+  </g>
+  <g>
+    <rect x="310" y="430" width="220" height="70" rx="8" fill="#EDE7F6" stroke="#5E35B1" stroke-width="2"/>
+    <text x="420" y="458" text-anchor="middle" font-size="14" font-weight="600" fill="#311B92">AgentPiece salleB</text>
+    <text x="420" y="478" text-anchor="middle" font-size="11" fill="#5E35B1">serveur RMI + abonné MQTT</text>
+  </g>
+  <g>
+    <rect x="580" y="430" width="220" height="70" rx="8" fill="#EDE7F6" stroke="#5E35B1" stroke-width="2"/>
+    <text x="690" y="458" text-anchor="middle" font-size="14" font-weight="600" fill="#311B92">AgentPiece cuisine</text>
+    <text x="690" y="478" text-anchor="middle" font-size="11" fill="#5E35B1">serveur RMI + abonné MQTT</text>
+  </g>
+
+  <!-- arrows agents <-> coordinateur (RMI, dashed, bidirectional) -->
+  <line x1="150" y1="500" x2="330" y2="588" stroke="#C62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowRed)" marker-start="url(#arrowRed)"/>
+  <line x1="420" y1="500" x2="420" y2="588" stroke="#C62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowRed)" marker-start="url(#arrowRed)"/>
+  <line x1="690" y1="500" x2="510" y2="588" stroke="#C62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowRed)" marker-start="url(#arrowRed)"/>
+  <text x="820" y="525" text-anchor="start" font-size="12" fill="#C62828" font-style="italic">RMI (port 2199)</text>
+  <text x="820" y="543" text-anchor="start" font-size="12" fill="#C62828" font-style="italic">getTemperature() /</text>
+  <text x="820" y="561" text-anchor="start" font-size="12" fill="#C62828" font-style="italic">setConsigneTemperature()</text>
+
+  <!-- ===== Coordinateur ===== -->
+  <rect x="310" y="590" width="220" height="70" rx="8" fill="#FFEBEE" stroke="#C62828" stroke-width="2.5"/>
+  <text x="420" y="620" text-anchor="middle" font-size="14" font-weight="700" fill="#B71C1C">CoordinateurBatiment</text>
+  <text x="420" y="640" text-anchor="middle" font-size="11" fill="#C62828">équilibrage thermique (client RMI)</text>
+
+  <!-- ===== Legend ===== -->
+  <g transform="translate(40, 700)">
+    <line x1="0" y1="5" x2="35" y2="5" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+    <text x="45" y="10" font-size="12" fill="#1A1A1A">MQTT (publish/subscribe, asynchrone)</text>
+    <line x1="0" y1="35" x2="35" y2="35" stroke="#C62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowRed)" marker-start="url(#arrowRed)"/>
+    <text x="45" y="40" font-size="12" fill="#1A1A1A">Java RMI (appel de méthode distant, synchrone)</text>
+  </g>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565C0"/>
+    </marker>
+    <marker id="aBlueLight" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64B5F6"/>
+    </marker>
+    <marker id="aRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#C62828"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="560" fill="#FFFFFF"/>
+
+  <text x="500" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1A1A1A">Deux façons de communiquer entre programmes séparés</text>
+
+  <!-- divider -->
+  <line x1="500" y1="50" x2="500" y2="510" stroke="#BDBDBD" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- ===== LEFT: MQTT ===== -->
+  <text x="250" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#0D47A1">MQTT — le babillard</text>
+
+  <rect x="60" y="85" width="380" height="55" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="250" y="118" text-anchor="middle" font-size="13" font-weight="600" fill="#1B5E20">CapteurSimulateur (émetteur)</text>
+
+  <line x1="250" y1="140" x2="250" y2="208" stroke="#1565C0" stroke-width="2" marker-end="url(#aBlue)"/>
+  <text x="270" y="180" font-size="11" fill="#1565C0" font-style="italic">publie une note</text>
+
+  <rect x="60" y="210" width="380" height="55" rx="8" fill="#E3F2FD" stroke="#1565C0" stroke-width="2.5"/>
+  <text x="250" y="243" text-anchor="middle" font-size="13" font-weight="700" fill="#0D47A1">Broker Mosquitto (babillard)</text>
+
+  <line x1="250" y1="265" x2="250" y2="333" stroke="#64B5F6" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#aBlueLight)"/>
+  <text x="270" y="305" font-size="11" fill="#1565C0" font-style="italic">lue plus tard,</text>
+  <text x="270" y="320" font-size="11" fill="#1565C0" font-style="italic">par qui la regarde</text>
+
+  <rect x="60" y="335" width="380" height="55" rx="8" fill="#EDE7F6" stroke="#5E35B1" stroke-width="2"/>
+  <text x="250" y="368" text-anchor="middle" font-size="13" font-weight="600" fill="#311B92">AgentPiece / openHAB (récepteur)</text>
+
+  <rect x="50" y="415" width="400" height="70" rx="8" fill="#F1F8E9" stroke="#558B2F" stroke-width="1.5"/>
+  <text x="250" y="440" text-anchor="middle" font-size="12" font-weight="700" fill="#33691E">PAS D'ATTENTE</text>
+  <text x="250" y="460" text-anchor="middle" font-size="11" fill="#33691E">L'émetteur continue aussitôt sa boucle,</text>
+  <text x="250" y="475" text-anchor="middle" font-size="11" fill="#33691E">sans savoir qui lit, ni quand.</text>
+
+  <!-- ===== RIGHT: RMI ===== -->
+  <text x="750" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#B71C1C">Java RMI — l'appel téléphonique</text>
+
+  <rect x="560" y="85" width="380" height="55" rx="8" fill="#FFEBEE" stroke="#C62828" stroke-width="2.5"/>
+  <text x="750" y="118" text-anchor="middle" font-size="13" font-weight="600" fill="#B71C1C">CoordinateurBatiment (appelant)</text>
+
+  <line x1="700" y1="140" x2="700" y2="333" stroke="#C62828" stroke-width="2" marker-end="url(#aRed)"/>
+  <text x="605" y="180" text-anchor="middle" font-size="11" fill="#C62828" font-style="italic">appelle</text>
+  <text x="605" y="195" text-anchor="middle" font-size="11" fill="#C62828" font-style="italic">getTemperature()</text>
+
+  <line x1="800" y1="333" x2="800" y2="140" stroke="#C62828" stroke-width="2" marker-end="url(#aRed)"/>
+  <text x="895" y="180" text-anchor="middle" font-size="11" fill="#C62828" font-style="italic">retourne 21.3</text>
+  <text x="895" y="195" text-anchor="middle" font-size="11" fill="#C62828" font-style="italic">(ou RemoteException)</text>
+
+  <!-- waiting bracket -->
+  <path d="M 620 220 L 605 220 L 605 260 L 620 260" fill="none" stroke="#B71C1C" stroke-width="1.5"/>
+  <text x="595" y="245" text-anchor="end" font-size="11" fill="#B71C1C" font-style="italic" font-weight="600">bloqué,</text>
+  <text x="595" y="260" text-anchor="end" font-size="11" fill="#B71C1C" font-style="italic" font-weight="600">en attente</text>
+
+  <rect x="560" y="210" width="380" height="55" rx="8" fill="none" stroke="none"/>
+
+  <rect x="560" y="335" width="380" height="55" rx="8" fill="#EDE7F6" stroke="#5E35B1" stroke-width="2"/>
+  <text x="750" y="368" text-anchor="middle" font-size="13" font-weight="600" fill="#311B92">AgentPiece (appelé)</text>
+
+  <rect x="550" y="415" width="400" height="70" rx="8" fill="#FFF3E0" stroke="#E65100" stroke-width="1.5"/>
+  <text x="750" y="440" text-anchor="middle" font-size="12" font-weight="700" fill="#BF360C">ATTENTE GARANTIE</text>
+  <text x="750" y="460" text-anchor="middle" font-size="11" fill="#BF360C">L'appelant reste bloqué jusqu'à la réponse</text>
+  <text x="750" y="475" text-anchor="middle" font-size="11" fill="#BF360C">exacte, ou une erreur immédiate si l'agent est mort.</text>
+
+  <text x="500" y="520" text-anchor="middle" font-size="12" font-style="italic" fill="#555555">Règle de choix : diffuser une mesure : babillard.  Décider maintenant : téléphone.</text>
+</svg>
